@@ -1334,8 +1334,8 @@
   <div class="modal">
     <div class="modal-h">导入数据 <span class="x" data-close="importMask">✕</span></div>
     <div class="modal-b">
-      <div style="margin-bottom:8px;">粘贴 TXT 格式内容（头部须为 [时间][状态] 格式），或选择文件：</div>
-      <input type="file" id="importFile" accept=".txt,.md" style="margin-bottom:10px; color:var(--dim);">
+      <div style="margin-bottom:8px;">支持 <b>TXT / Markdown / JSON</b> 三种格式：<br>· <b>JSON</b>：本地版点「导出」选 JSON 得到的文件，直接选择或粘贴即可导入，条目与文件索引完整迁移<br>· <b>TXT</b>：头部须为 [时间][状态] 格式（本地版导出的 TXT 可直接导入）<br>· 文件内容（≤30MB）会随条目一起存入本浏览器，导入后自动备份原数据</div>
+      <input type="file" id="importFile" accept=".txt,.md,.json" style="margin-bottom:10px; color:var(--dim);">
       <textarea id="importBox" placeholder="[2026.9.24.10：0：0][待办][标签][0][标题][文件名][文本][大小][副本名]&#10;内容正文…"></textarea>
       <div style="margin-top:10px;">
         <label style="margin-right:18px; cursor:pointer;"><input type="radio" name="importMode" value="append" checked> 追加合并</label>
@@ -1759,6 +1759,7 @@ function render(){
   const pager = document.getElementById('pager');
   if(!allEntries.length){
     box.innerHTML = '<div class="empty">暂无条目，可在左侧添加</div>';
+
     if(pager) pager.style.display = 'none';
     document.getElementById('batchBar').style.display = state.batch ? 'flex' : 'none';
     return;
@@ -2255,7 +2256,7 @@ document.getElementById('importOk').addEventListener('click', async ()=>{
   if(!content.trim()){ toast('请粘贴内容或选择文件'); return; }
   const mode = document.querySelector('input[name=importMode]:checked').value;
   if(mode === 'replace'){
-    document.getElementById('importConfirmMsg').textContent = '替换模式将用导入内容覆盖整个条目库（当前 '+ (statsData?statsData.total:'?') +' 条将被替换）。此操作不可撤销，但服务端会在写盘前自动备份旧数据到 数据备份\\ 目录。';
+    document.getElementById('importConfirmMsg').textContent = '替换模式将用导入内容覆盖整个条目库（当前 '+ (statsData?statsData.total:'?') +' 条将被替换）。此操作不可撤销，但替换前会自动下载一份当前数据的 JSON 备份文件，请妥善保存该文件。';
     document.getElementById('importConfirm').style.display = '';
     return;
   }
@@ -2545,9 +2546,9 @@ document.getElementById('pager').addEventListener('click', e=>{
     if(pwd) pwd.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); tryCustomUnlock(); } });
   })();
 
-  let saved = 'gold';
-  try{ saved = localStorage.getItem('pm-theme') || 'gold'; }catch(e){}
-  if(THEMES.indexOf(saved) < 0) saved = 'gold';   // 无效值回退黑金奢华
+  let saved = 'snowsun';
+  try{ saved = localStorage.getItem('pm-theme') || 'snowsun'; }catch(e){}
+  if(THEMES.indexOf(saved) < 0) saved = 'snowsun';   // 无效值回退风雪高山
   root.setAttribute('data-theme', saved);
   if(saved === 'custom'){ customCfg = loadCfg(); applyCfg(customCfg); }
   const sw = document.getElementById('themeSwitcher');

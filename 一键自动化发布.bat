@@ -8,13 +8,13 @@ echo   Steps: Pull - Obfuscate - Commit - Push to GitHub
 echo ============================================================
 
 where node >nul 2>nul
-if %errorlevel% neq 0 (
+if errorlevel 1 (
     echo [ERROR] Node.js not found. Install from: https://nodejs.org
     pause
     exit /b 1
 )
 where git >nul 2>nul
-if %errorlevel% neq 0 (
+if errorlevel 1 (
     echo [ERROR] Git not found. Install from: https://git-scm.com
     pause
     exit /b 1
@@ -23,13 +23,13 @@ if %errorlevel% neq 0 (
 echo.
 echo [1/5] Pulling latest from remote...
 git pull --rebase --autostash origin main
-if %errorlevel% neq 0 (
+if errorlevel 1 (
     echo.
     echo ============================================================
     echo [ERROR] Pull failed!
     echo Reasons: remote has new commits, or merge conflict.
     echo Fix:
-    echo   1. Run: git status  (see conflicting files)
+    echo   1. Run: git status  to see conflicting files
     echo   2. Resolve conflicts, then: git add . ^&^& git rebase --continue
     echo   3. Run this bat again
     echo ============================================================
@@ -40,7 +40,7 @@ if %errorlevel% neq 0 (
 echo.
 echo [2/5] Running obfuscator (source - release)...
 node _obfuscate.js
-if %errorlevel% neq 0 (
+if errorlevel 1 (
     echo.
     echo ============================================================
     echo [ERROR] Obfuscator failed! Check _obfuscate.js for errors.
@@ -57,7 +57,7 @@ git status --short
 echo ---------------------
 
 git diff --cached --quiet
-if %errorlevel% equ 0 (
+if not errorlevel 1 (
     echo.
     echo [INFO] No changes to commit.
     echo   If you edited source files, check:
@@ -72,7 +72,7 @@ if %errorlevel% equ 0 (
 echo.
 echo [4/5] Committing...
 git commit -m "auto update: %date% %time%"
-if %errorlevel% neq 0 (
+if errorlevel 1 (
     echo [ERROR] Commit failed!
     pause
     exit /b 1
@@ -81,7 +81,7 @@ if %errorlevel% neq 0 (
 echo.
 echo [5/5] Pushing to GitHub...
 git push origin main
-if %errorlevel% equ 0 (
+if not errorlevel 1 (
     echo.
     echo ============================================================
     echo   PUBLISH SUCCESS!
