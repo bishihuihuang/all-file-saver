@@ -1032,8 +1032,6 @@
   .dlg-btn{background:linear-gradient(135deg,var(--gold),#d99a2b); color:#1a1306; border:none; border-radius:999px; padding:11px 34px; font-size:14px; font-weight:700; letter-spacing:2px; cursor:pointer; box-shadow:0 8px 22px rgba(232,182,76,.28), inset 0 1px 0 rgba(255,255,255,.35); transition:.2s;}
   .dlg-btn:hover{transform:translateY(-2px); box-shadow:0 12px 28px rgba(232,182,76,.4);}
   .dlg-btn:active{transform:translateY(0);}
-  .dlg-dismiss{color:var(--dim); background:none; border:none; font-size:12px; cursor:pointer; text-decoration:underline; padding:4px;}
-  .dlg-dismiss:hover{color:var(--txt);}
   .dlg-x{position:absolute; top:12px; right:14px; z-index:3; width:26px; height:26px; border-radius:50%; border:none; background:rgba(255,255,255,.06); color:var(--dim); font-size:14px; cursor:pointer; line-height:1;}
   .dlg-x:hover{background:rgba(232,182,76,.18); color:var(--gold);}
 
@@ -3114,7 +3112,6 @@ log('🟢 全能文件保存 v3.0 页面已打开（照搬 AI提示词布局：�
     </div>
     <div class="dlg-actions">
       <button class="dlg-btn" id="dlgStart">开始使用</button>
-      <button class="dlg-dismiss" id="dlgDismiss">稍后再说</button>
     </div>
   </div>
 </div>
@@ -3131,9 +3128,8 @@ log('🟢 全能文件保存 v3.0 页面已打开（照搬 AI提示词布局：�
   }
   document.getElementById('dlgStart').addEventListener('click', closeDlg);
   document.getElementById('dlgX').addEventListener('click', closeDlg);
-  document.getElementById('dlgDismiss').addEventListener('click', closeDlg);
   mask.addEventListener('click', function(e){ if(e.target === mask) closeDlg(); });
-  setTimeout(closeDlg, 3200);
+  setTimeout(closeDlg, 10000);
 })();
 </script>
 
