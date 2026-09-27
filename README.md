@@ -35,8 +35,8 @@
 ```text
 _原始未混淆版\           ← 源码（修改在这里改）
 全能文件保存系统\         ← 混淆发布版（由工具生成，勿直接修改）
-_混淆工具.js             ← 混淆工具（Node.js 脚本）
-一键自动化发布.bat        ← 一键：拉取→混淆→提交→推送
+_obfuscate.js             ← 混淆工具（Node.js 脚本）
+一键自动化发布.bat        ← 一键：拉取-混淆-提交-推送
 ```
 
 修改流程：
@@ -45,14 +45,14 @@ _混淆工具.js             ← 混淆工具（Node.js 脚本）
 2. 双击 `一键自动化发布.bat`（自动混淆并推送到 GitHub Pages）
 3. 等待 1-2 分钟，刷新线上页面验证
 
-单独生成发布版（不推送）：`node _混淆工具.js`
+单独生成发布版（不推送）：`node _obfuscate.js`
 
 ## 技术说明
 
 - 纯 HTML + CSS + JavaScript，无任何后端依赖
 - 数据：条目存 localStorage，文件存 IndexedDB
 - PWA：manifest.json + service-worker.js，支持离线与安装
-- 混淆：base64 + 字符串逆序双层处理（见 _混淆工具.js）
+- 混淆：base64 + 字符串逆序双层处理（见 _obfuscate.js）
 
 ## 免责声明
 
