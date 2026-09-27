@@ -1,0 +1,12 @@
+# 统一换行符
+* text=auto
+
+# 批处理保持 CRLF（Windows）
+*.bat text eol=crlf
+
+# 文本文件 UTF-8
+*.html text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.svg text eol=lf
