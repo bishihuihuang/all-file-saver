@@ -502,6 +502,19 @@
   .op.cancel:hover{border-color:var(--dim); color:var(--dim);}
   .chkbox{width:16px; height:16px; accent-color:var(--gold-2); cursor:pointer; flex:none;}
   .empty{color:var(--dim); text-align:center; padding:40px 0; font-size:13px;}
+  .welcome{position:relative; max-width:440px; margin:40px auto 20px; text-align:center; padding:36px 24px;}
+  .welcome-orb{position:absolute; top:26px; left:50%; width:120px; height:120px; margin-left:-60px; border-radius:50%; background:radial-gradient(circle, var(--gold) 0%, transparent 70%); opacity:.22; animation:welcomePulse 2.4s ease-in-out infinite;}
+  .welcome-icon{position:relative; display:inline-block; animation:welcomePop .7s cubic-bezier(.34,1.56,.64,1) both; filter:drop-shadow(0 6px 18px rgba(0,0,0,.25));}
+  .welcome-title{position:relative; margin-top:18px; font-size:17px; font-weight:600; color:var(--gold); letter-spacing:1px; animation:welcomeUp .6s ease-out .15s both;}
+  .welcome-sub{position:relative; margin-top:8px; font-size:12.5px; color:var(--dim); line-height:1.7; animation:welcomeUp .6s ease-out .3s both;}
+  .welcome-dots{position:relative; margin-top:18px; display:flex; justify-content:center; gap:10px;}
+  .welcome-dots span{width:6px; height:6px; border-radius:50%; background:var(--gold); opacity:.55; animation:welcomeFloat 1.6s ease-in-out infinite;}
+  .welcome-dots span:nth-child(2){animation-delay:.25s;}
+  .welcome-dots span:nth-child(3){animation-delay:.5s;}
+  @keyframes welcomePop{0%{transform:scale(.4); opacity:0;} 60%{transform:scale(1.12);} 100%{transform:scale(1); opacity:1;}}
+  @keyframes welcomeUp{0%{transform:translateY(14px); opacity:0;} 100%{transform:translateY(0); opacity:1;}}
+  @keyframes welcomePulse{0%,100%{transform:scale(.85); opacity:.15;} 50%{transform:scale(1.15); opacity:.3;}}
+  @keyframes welcomeFloat{0%,100%{transform:translateY(0);} 50%{transform:translateY(-7px);}}
   .toast{
     position:fixed; bottom:26px; left:50%; transform:translateX(-50%);
     background:#2a2f3e; color:var(--txt); border:1px solid var(--gold-2);
@@ -1758,7 +1771,7 @@ function render(){
   const box = document.getElementById('list');
   const pager = document.getElementById('pager');
   if(!allEntries.length){
-    box.innerHTML = '<div class="empty">暂无条目，可在左侧添加</div>';
+    box.innerHTML = '<div class="welcome"><div class="welcome-orb"></div><div class="welcome-icon"><svg viewBox="0 0 64 64" width="64" height="64" fill="none"><rect x="6" y="14" width="52" height="40" rx="8" fill="var(--card-2)" stroke="var(--gold)" stroke-width="2.5"/><path d="M6 24 L58 24" stroke="var(--gold)" stroke-width="2.5"/><rect x="20" y="36" width="24" height="12" rx="3" fill="var(--gold)" opacity="0.25"/><path d="M26 42 L38 42" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round"/></svg></div><div class="welcome-title">欢迎使用全能文件保存</div><div class="welcome-sub">在左侧输入文本或选择文件，开始保存你的内容</div><div class="welcome-dots"><span></span><span></span><span></span></div></div>';
 
     if(pager) pager.style.display = 'none';
     document.getElementById('batchBar').style.display = state.batch ? 'flex' : 'none';
