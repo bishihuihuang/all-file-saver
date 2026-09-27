@@ -502,19 +502,6 @@
   .op.cancel:hover{border-color:var(--dim); color:var(--dim);}
   .chkbox{width:16px; height:16px; accent-color:var(--gold-2); cursor:pointer; flex:none;}
   .empty{color:var(--dim); text-align:center; padding:40px 0; font-size:13px;}
-  .welcome{position:relative; max-width:440px; margin:40px auto 20px; text-align:center; padding:36px 24px;}
-  .welcome-orb{position:absolute; top:26px; left:50%; width:120px; height:120px; margin-left:-60px; border-radius:50%; background:radial-gradient(circle, var(--gold) 0%, transparent 70%); opacity:.22; animation:welcomePulse 2.4s ease-in-out infinite;}
-  .welcome-icon{position:relative; display:inline-block; animation:welcomePop .7s cubic-bezier(.34,1.56,.64,1) both; filter:drop-shadow(0 6px 18px rgba(0,0,0,.25));}
-  .welcome-title{position:relative; margin-top:18px; font-size:17px; font-weight:600; color:var(--gold); letter-spacing:1px; animation:welcomeUp .6s ease-out .15s both;}
-  .welcome-sub{position:relative; margin-top:8px; font-size:12.5px; color:var(--dim); line-height:1.7; animation:welcomeUp .6s ease-out .3s both;}
-  .welcome-dots{position:relative; margin-top:18px; display:flex; justify-content:center; gap:10px;}
-  .welcome-dots span{width:6px; height:6px; border-radius:50%; background:var(--gold); opacity:.55; animation:welcomeFloat 1.6s ease-in-out infinite;}
-  .welcome-dots span:nth-child(2){animation-delay:.25s;}
-  .welcome-dots span:nth-child(3){animation-delay:.5s;}
-  @keyframes welcomePop{0%{transform:scale(.4); opacity:0;} 60%{transform:scale(1.12);} 100%{transform:scale(1); opacity:1;}}
-  @keyframes welcomeUp{0%{transform:translateY(14px); opacity:0;} 100%{transform:translateY(0); opacity:1;}}
-  @keyframes welcomePulse{0%,100%{transform:scale(.85); opacity:.15;} 50%{transform:scale(1.15); opacity:.3;}}
-  @keyframes welcomeFloat{0%,100%{transform:translateY(0);} 50%{transform:translateY(-7px);}}
   .toast{
     position:fixed; bottom:26px; left:50%; transform:translateX(-50%);
     background:#2a2f3e; color:var(--txt); border:1px solid var(--gold-2);
@@ -1019,6 +1006,37 @@
   .glow-card::before{ animation-duration:calc(5s * var(--anim-power,1)); }
   .glow-card::after{ animation-duration:calc(3.6s * var(--anim-power,1)); }
   header h1::after{ animation-duration:calc(3.6s * var(--anim-power,1)); }
+
+  /* ===== 入场欢迎对话（每次打开显示，加载过渡） ===== */
+  .dlg-mask{position:fixed; inset:0; z-index:999; display:flex; align-items:center; justify-content:center; background:rgba(6,10,20,.6); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); animation:dlgMaskIn .35s ease-out both;}
+  .dlg-mask.dlg-out{opacity:0; transition:opacity .35s;}
+  @keyframes dlgMaskIn{0%{opacity:0;} 100%{opacity:1;}}
+  .dlg{position:relative; width:430px; max-width:92vw; border-radius:22px; background:linear-gradient(170deg, rgba(28,40,62,.97), rgba(16,24,40,.99)); border:1px solid rgba(255,255,255,.09); box-shadow:0 24px 70px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.07); padding:34px 32px 26px; text-align:center; overflow:hidden; animation:dlgIn .6s cubic-bezier(.22,1.2,.36,1) .08s both;}
+  .dlg::before{content:""; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,transparent,var(--gold) 30%,#ffd98a 50%,var(--gold) 70%,transparent);}
+  .dlg::after{content:""; position:absolute; top:-80px; left:50%; width:280px; height:280px; margin-left:-140px; border-radius:50%; background:radial-gradient(circle, rgba(232,182,76,.16), transparent 70%); animation:dlgGlow 2.6s ease-in-out infinite; pointer-events:none;}
+  @keyframes dlgIn{0%{transform:translateY(42px) scale(.88); opacity:0;} 100%{transform:translateY(0) scale(1); opacity:1;}}
+  @keyframes dlgGlow{0%,100%{opacity:.5; transform:scale(.9);} 50%{opacity:1; transform:scale(1.08);}}
+  .dlg-badge{display:inline-flex; align-items:center; gap:6px; font-size:11px; letter-spacing:3px; color:var(--gold); border:1px solid rgba(232,182,76,.45); border-radius:999px; padding:4px 14px; margin-bottom:16px; background:rgba(232,182,76,.08); animation:dlgUp .5s ease-out .22s both;}
+  .dlg-icon{position:relative; display:inline-block; margin-bottom:14px; animation:dlgIcon .7s cubic-bezier(.34,1.56,.64,1) .3s both;}
+  @keyframes dlgIcon{0%{transform:scale(.4) rotate(-8deg); opacity:0;} 60%{transform:scale(1.1) rotate(2deg);} 100%{transform:scale(1) rotate(0); opacity:1;}}
+  .dlg-title{position:relative; font-size:21px; font-weight:700; letter-spacing:1.5px; color:var(--txt); animation:dlgUp .55s ease-out .4s both;}
+  .dlg-title b{color:var(--gold);}
+  .dlg-sub{position:relative; margin-top:10px; font-size:13px; color:var(--dim); line-height:1.75; animation:dlgUp .55s ease-out .5s both;}
+  @keyframes dlgUp{0%{transform:translateY(14px); opacity:0;} 100%{transform:translateY(0); opacity:1;}}
+  .dlg-feats{position:relative; display:flex; justify-content:center; gap:10px; margin:22px 0 6px; animation:dlgUp .55s ease-out .6s both;}
+  .dlg-fcard{flex:1; max-width:112px; border-radius:12px; padding:10px 6px; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.035);}
+  .dlg-fcard .f-ic{font-size:16px;}
+  .dlg-fcard .f-tx{font-size:10.5px; color:var(--dim); margin-top:5px; line-height:1.4;}
+  .dlg-fcard:hover{border-color:rgba(232,182,76,.5); background:rgba(232,182,76,.07); transition:.25s;}
+  .dlg-actions{position:relative; margin-top:24px; display:flex; align-items:center; justify-content:center; gap:14px; animation:dlgUp .55s ease-out .7s both;}
+  .dlg-btn{background:linear-gradient(135deg,var(--gold),#d99a2b); color:#1a1306; border:none; border-radius:999px; padding:11px 34px; font-size:14px; font-weight:700; letter-spacing:2px; cursor:pointer; box-shadow:0 8px 22px rgba(232,182,76,.28), inset 0 1px 0 rgba(255,255,255,.35); transition:.2s;}
+  .dlg-btn:hover{transform:translateY(-2px); box-shadow:0 12px 28px rgba(232,182,76,.4);}
+  .dlg-btn:active{transform:translateY(0);}
+  .dlg-dismiss{color:var(--dim); background:none; border:none; font-size:12px; cursor:pointer; text-decoration:underline; padding:4px;}
+  .dlg-dismiss:hover{color:var(--txt);}
+  .dlg-x{position:absolute; top:12px; right:14px; z-index:3; width:26px; height:26px; border-radius:50%; border:none; background:rgba(255,255,255,.06); color:var(--dim); font-size:14px; cursor:pointer; line-height:1;}
+  .dlg-x:hover{background:rgba(232,182,76,.18); color:var(--gold);}
+
 </style>
 </head>
 <body>
@@ -1771,7 +1789,7 @@ function render(){
   const box = document.getElementById('list');
   const pager = document.getElementById('pager');
   if(!allEntries.length){
-    box.innerHTML = '<div class="welcome"><div class="welcome-orb"></div><div class="welcome-icon"><svg viewBox="0 0 64 64" width="64" height="64" fill="none"><rect x="6" y="14" width="52" height="40" rx="8" fill="var(--card-2)" stroke="var(--gold)" stroke-width="2.5"/><path d="M6 24 L58 24" stroke="var(--gold)" stroke-width="2.5"/><rect x="20" y="36" width="24" height="12" rx="3" fill="var(--gold)" opacity="0.25"/><path d="M26 42 L38 42" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round"/></svg></div><div class="welcome-title">欢迎使用全能文件保存</div><div class="welcome-sub">在左侧输入文本或选择文件，开始保存你的内容</div><div class="welcome-dots"><span></span><span></span><span></span></div></div>';
+    box.innerHTML = '<div class="empty">暂无内容</div>';
 
     if(pager) pager.style.display = 'none';
     document.getElementById('batchBar').style.display = state.batch ? 'flex' : 'none';
@@ -2743,7 +2761,7 @@ document.getElementById('pager').addEventListener('click', e=>{
     btn.appendChild(r);
     setTimeout(()=>r.remove(), 700);
     toast('正在前往主程序…');
-    setTimeout(()=>{ const w = window.open('https://bishihuihuang.github.io/zhaolezi/index.html', '_blank'); if(!w){ location.href = 'https://bishihuihuang.github.io/zhaolezi/index.html'; } }, 350);
+    setTimeout(()=>{ location.href = 'https://bishihuihuang.github.io/zhaolezi/index.html'; }, 350);
   });
 })();
 
@@ -3080,5 +3098,44 @@ loadStats();
 loadTodayLog();
 log('🟢 全能文件保存 v3.0 页面已打开（照搬 AI提示词布局：批量/置顶/8主题/回收站/导出导入 + 文件能力）', 'ok');
 </script>
+
+<!-- 入场欢迎对话（每次打开显示，网页加载过渡） -->
+<div class="dlg-mask" id="dlgMask">
+  <div class="dlg">
+    <button class="dlg-x" id="dlgX">✕</button>
+    <div class="dlg-badge">W E L C O M E</div>
+    <div class="dlg-icon"><svg viewBox="0 0 64 64" width="62" height="62" fill="none"><defs><linearGradient id="dlgG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd98a"/><stop offset="1" stop-color="#e8b64c"/></linearGradient></defs><rect x="6" y="14" width="52" height="40" rx="9" fill="rgba(232,182,76,.14)" stroke="url(#dlgG)" stroke-width="2.5"/><path d="M6 26 L58 26" stroke="url(#dlgG)" stroke-width="2.5"/><rect x="22" y="36" width="20" height="11" rx="3" fill="rgba(255,217,138,.25)"/><path d="M27 41.5 L37 41.5" stroke="#ffd98a" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+    <div class="dlg-title">欢迎使用 <b>全能文件保存</b></div>
+    <div class="dlg-sub">文本、文件、标签与时间追溯，一站式保存你的重要内容<br>所有数据仅存于本浏览器，离线可用、隐私无忧</div>
+    <div class="dlg-feats">
+      <div class="dlg-fcard"><div class="f-ic">📝</div><div class="f-tx">文本条目<br>多行保存</div></div>
+      <div class="dlg-fcard"><div class="f-ic">📎</div><div class="f-tx">文件上传<br>≤30MB</div></div>
+      <div class="dlg-fcard"><div class="f-ic">🔖</div><div class="f-tx">标签分类<br>状态置顶</div></div>
+    </div>
+    <div class="dlg-actions">
+      <button class="dlg-btn" id="dlgStart">开始使用</button>
+      <button class="dlg-dismiss" id="dlgDismiss">稍后再说</button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var mask = document.getElementById('dlgMask');
+  if(!mask) return;
+  var closed = false;
+  function closeDlg(){
+    if(closed) return;
+    closed = true;
+    mask.classList.add('dlg-out');
+    setTimeout(function(){ if(mask.parentNode) mask.parentNode.removeChild(mask); }, 380);
+  }
+  document.getElementById('dlgStart').addEventListener('click', closeDlg);
+  document.getElementById('dlgX').addEventListener('click', closeDlg);
+  document.getElementById('dlgDismiss').addEventListener('click', closeDlg);
+  mask.addEventListener('click', function(e){ if(e.target === mask) closeDlg(); });
+  setTimeout(closeDlg, 3200);
+})();
+</script>
+
 </body>
 </html>
