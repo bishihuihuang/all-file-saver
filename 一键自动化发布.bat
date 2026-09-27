@@ -1,101 +1,100 @@
 @echo off
-chcp 65001 >nul
 cd /d "%~dp0"
-title 全能文件保存 - 一键发布到 GitHub
+title All-File-Saver - Auto Publish to GitHub
 
 echo ============================================================
-echo   全能文件保存 · 一键自动化发布
-echo   步骤：拉取远端 → 混淆源码 → 提交 → 推送 GitHub
+echo   All-File-Saver - One-click Auto Publish
+echo   Steps: Pull - Obfuscate - Commit - Push to GitHub
 echo ============================================================
 
 where node >nul 2>nul
 if %errorlevel% neq 0 (
-    echo [错误] 未检测到 Node.js，请先安装：https://nodejs.org
+    echo [ERROR] Node.js not found. Install from: https://nodejs.org
     pause
     exit /b 1
 )
 where git >nul 2>nul
 if %errorlevel% neq 0 (
-    echo [错误] 未检测到 Git，请先安装：https://git-scm.com
+    echo [ERROR] Git not found. Install from: https://git-scm.com
     pause
     exit /b 1
 )
 
 echo.
-echo [1/5] 拉取远端最新版本...
+echo [1/5] Pulling latest from remote...
 git pull --rebase --autostash origin main
 if %errorlevel% neq 0 (
     echo.
     echo ============================================================
-    echo [错误] 拉取失败！
-    echo 原因：远端存在本地没有的提交，或存在冲突。
-    echo 处理：
-    echo   1. 运行 git status 查看冲突文件
-    echo   2. 手动解决冲突后：git add . 并 git rebase --continue
-    echo   3. 重新运行本脚本
+    echo [ERROR] Pull failed!
+    echo Reasons: remote has new commits, or merge conflict.
+    echo Fix:
+    echo   1. Run: git status  (see conflicting files)
+    echo   2. Resolve conflicts, then: git add . ^&^& git rebase --continue
+    echo   3. Run this bat again
     echo ============================================================
     pause
     exit /b 1
 )
 
 echo.
-echo [2/5] 运行混淆工具（源码 → 混淆发布版）...
-node _混淆工具.js
+echo [2/5] Running obfuscator (source - release)...
+node _obfuscate.js
 if %errorlevel% neq 0 (
     echo.
     echo ============================================================
-    echo [错误] 混淆工具执行失败！请检查 _混淆工具.js 是否有语法错误。
+    echo [ERROR] Obfuscator failed! Check _obfuscate.js for errors.
     echo ============================================================
     pause
     exit /b 1
 )
 
 echo.
-echo [3/5] 暂存所有改动...
+echo [3/5] Staging all changes...
 git add .
-echo --- 本次改动文件 ---
+echo --- Changed files ---
 git status --short
 echo ---------------------
 
 git diff --cached --quiet
 if %errorlevel% equ 0 (
     echo.
-    echo [提示] 没有需要提交的改动。
-    echo   如果刚修改过源码，请确认：
-    echo   - 修改的是 _原始未混淆版\ 目录下的文件？
-    echo   - 混淆工具是否已重新生成发布版？
+    echo [INFO] No changes to commit.
+    echo   If you edited source files, check:
+    echo   - Did you edit files under _src folder?
+    echo   - Did the obfuscator regenerate the release file?
     echo ============================================================
-    echo   无需上传，脚本结束。
+    echo   Nothing to upload. Done.
     pause
     exit /b 0
 )
 
 echo.
-echo [4/5] 提交改动...
+echo [4/5] Committing...
 git commit -m "auto update: %date% %time%"
 if %errorlevel% neq 0 (
-    echo [错误] 提交失败！
+    echo [ERROR] Commit failed!
     pause
     exit /b 1
 )
 
 echo.
-echo [5/5] 推送至 GitHub...
+echo [5/5] Pushing to GitHub...
 git push origin main
 if %errorlevel% equ 0 (
     echo.
     echo ============================================================
-    echo   发布成功！
-    echo   等待 1-2 分钟后刷新 GitHub Pages 页面即可看到更新。
+    echo   PUBLISH SUCCESS!
+    echo   Refresh the GitHub Pages site in 1-2 minutes.
     echo ============================================================
 ) else (
     echo.
     echo ============================================================
-    echo [错误] 推送失败！可能原因：
-    echo   1. 远端有新提交被拒绝 → 重新运行本脚本自动拉取合并
-    echo   2. 网络问题（超时/代理）→ 检查网络后重试
-    echo   3. 认证失败 → 检查 Git 凭据（凭据管理器）
-    echo   4. GitHub 拦截内容 → 检查代码中是否含敏感信息
+    echo [ERROR] Push failed! Possible reasons:
+    echo   1. Rejected - run this bat again to pull and merge
+    echo   2. Network issue - check connection and retry
+    echo   3. Auth failed - check Git credentials
+    echo   4. GitHub blocked content - check for sensitive data
     echo ============================================================
 )
 
